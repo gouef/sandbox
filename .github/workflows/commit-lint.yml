@@ -24,4 +24,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Commit lint
-        uses: gouef/commit-lint-action@main
+        uses: gouef/commit-lint-action@v1
