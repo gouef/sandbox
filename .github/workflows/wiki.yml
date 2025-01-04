@@ -1,12 +1,10 @@
-name: Update Wiki
+name: Update Github wiki
 
 on:
   push:
     branches:
       - main
       - master
-#    paths:
-#      - 'docs/**'
 
 permissions:
   contents: write
@@ -14,39 +12,12 @@ permissions:
 jobs:
   update-wiki:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Set up Git
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-
-      - name: Clone Wiki Repository
-        run: |
-            git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git ./wiki
-
-      - name: Sync Docs to Wiki
-        run: |
-          cp -R docs/ wiki/
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Commit and Push Wiki changes
-        run: |
-          cd wiki
-          git add .
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "[Update] Wiki from repository docs"
-            git push origin master
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Cleanup
-        run: |
-          rm -R wiki/
+      - name: Update wiki
+        uses: gouef/github-wiki-sync-repository-action@main
+        with:
+          dir: "docs/"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
