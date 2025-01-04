@@ -28,6 +28,8 @@ jobs:
         with:
           repository: ${{ github.repository }}.wiki.git
           path: wiki
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Sync Docs to Wiki
         run: |
